@@ -1,0 +1,43 @@
+# 重力补偿参数 —— 由 panda_arm_controller 在 on_configure() 读取
+
+# 被【ros2_control_node 的 parameters】和【spawner 的 --param-file】同时加载
+# 被 仿真和实物同时加载
+
+panda_arm_controller:
+  ros__parameters:
+    robot_description_topic: /robot_description
+
+    # ── 重力补偿开关 / 幅值 ──
+    #
+    # 0.0 = 关闭（安全默认）：effort 命令恒等于轨迹自带值（现在是 0），
+    #                        行为与加本功能之前完全一致。
+    #
+    # 上机流程（每一步只改一个数字，改完重启 —— 本参数不支持热更新）：
+    #   0.0  → 先确认日志出现 "重力模型已加载: nq=7 nv=7"
+    #   0.2  → 手感应明显"变轻"、下垂变小
+    #   0.5  → 下垂明显减小
+    #   1.0  → 下垂趋于 0；此时可把 motor_params.yaml 的 kp 从 25/18 降到 5 / 2~4
+    #
+    # 标定（不需要力传感器）：某关节静止时读硬件日志里的 tor（电机上报力矩），
+    #    gravity_scale 真实值 = tor_实测 / tau_URDF(scale=1)
+    # 对 joint_2 / joint_4 各取 3~4 个位形求平均。
+    # URDF 的质量通常不含线缆/工装/负载，实测常偏小 20~50%，所以常见值是 1.2~1.5。
+    gravity_scale: 1.0
+
+    # ── 逐关节符号（+1 / -1）──
+    #gravity_sign 本质上是每个关节一个独立的 gravity_scale，当做符号用，但其实任意值都能执行
+    # 顺序与 ros2_controllers.yaml 的 joints 一致：
+    #   [joint_1, joint_2, joint_3, joint_4, joint_5, joint_6, joint_7]
+    #
+    # URDF 的关节轴方向来自 CAD 建模坐标系，实物电机正方向来自装配实测，
+    # 个别关节可能相反。判断方法（先把上面的 gravity_scale 加到 0.2、平放重启，再摆几个位形看）：
+    #   · 倾向于直立状态        → 该关节符号对，1.0 保持不动
+    #   · 倾向于弯曲           → 该关节符号反了，翻成 -1
+    #   · joint_1 / joint_7 怎么翻都一样 → 正常（τ_g ≤ 0.04 Nm，始终很小）
+    #   · joint_3 / joint_5 竖直时也看不出来 → 正常（τ_g ≈ 0）；
+    #     但手臂弯到水平附近时它们 τ_g 可达 0.79 / 0.12 Nm，
+    #     所以判这两个关节的符号时，请在基座z轴朝上时把手臂【摆弯】再试，别在竖直姿态下试。
+    gravity_sign: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+
+#注：模型里计算方法是按照基座z竖直向上计算的，所以实物需要让基座符合模型重力才能正确补偿。
+#支持不同姿势，模型里需同步改变

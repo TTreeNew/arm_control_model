@@ -1,0 +1,74 @@
+<?xml version="1.0" ?>
+<robot name="panda_arm" xmlns:xacro="http://www.ros.org/wiki/xacro" >
+
+<xacro:arg name="ros2_controllers_file"
+           default="$(find real_arm_config)/config/ros2_controllers.yaml"/>
+<!-- damping="0.5" 和 friction="0.05"正确的写法是写在panda_arm.xacro里面 -->
+<!-- 在 gazebo_sim.launch.pyL72-L88 加载 sim_controllers.yaml 覆盖这里的 ros2_controllers.yaml -->
+<!-- 这里也可以直接写 sim_controllers.yaml 无影响 -->
+<xacro:macro name="gazebo_link_reference"
+params="link_name body_color:=Gazebo/Silver">
+  <gazebo reference="${link_name}">
+    <material>${body_color}</material>
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <self_collide>true</self_collide>
+    <gravity>true</gravity>
+  </gazebo>
+</xacro:macro>
+
+<xacro:gazebo_link_reference link_name="base_link"/>
+<xacro:gazebo_link_reference link_name="link_1_1"/>
+<xacro:gazebo_link_reference link_name="link_2_1"/>
+<xacro:gazebo_link_reference link_name="link_3_1"/>
+<xacro:gazebo_link_reference link_name="link_4_1"/>
+<xacro:gazebo_link_reference link_name="link_5_1"/>
+<xacro:gazebo_link_reference link_name="link_6_1"/>
+<xacro:gazebo_link_reference link_name="end_link_1"/>
+<xacro:gazebo_link_reference link_name="finger_1"/>
+
+<!--
+   damping / friction 定义在 urdf 里，不能在 <gazebo> 里定义
+
+  坑： Gazebo Classic 里 damping/friction 有两条实现路径：
+
+    · 默认 implicitSpringDamper = false
+      → ApplyExplicitStiffnessDamping()：把阻尼做成一个"力"。
+        而这个"力"和 gazebo_ros2_control 的 SetForce() 写的是同一个
+        ODEJoint::forceApplied[]（头文件原文："used by ODE to store external
+        force applied by the user"），导致 两者互相覆盖
+        导致 控制器算出的 effort 被覆盖，机械臂在 Gazebo 里失去力矩并观察到模型塌成一团。
+        （RViz2 完全正常，因为它既不读 <dynamics> 也不碰 Gazebo 物理对象。）
+
+  解决方法：implicitSpringDamper = true  （本文件 L51）
+      → ApplyImplicitStiffnessDamping()：用 CFM/ERP（进约束矩阵）实现，
+        不碰 forceApplied[]→ 从根上消除与 SetForce 的冲突。
+        实测 SDF 中会多出：
+          <implicit_spring_damper>1</implicit_spring_damper>
+          <cfm_damping>1</cfm_damping>
+-->
+<xacro:macro name="gazebo_joint_implicit_damper" params="joint_name">
+  <gazebo reference="${joint_name}">
+    <implicitSpringDamper>true</implicitSpringDamper>
+  </gazebo>
+</xacro:macro>
+
+<xacro:gazebo_joint_implicit_damper joint_name="joint_1"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_2"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_3"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_4"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_5"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_6"/>
+<xacro:gazebo_joint_implicit_damper joint_name="joint_7"/>
+
+<gazebo>
+  <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+    <!-- ★ 本文件在 panda_arm.xacro 里 include
+         ★ panda_arm.xacro分别在real_arm_config/config下的panda_arm.urdf.xacro和panda_arm.sim.urdf.xacro里include
+         ★ 实物会忽略gazebo标签，因此这里的控制器插件不影响实物 
+         最终会把panda_arm.xacro和panda_arm.ros2_control.xacro整合在panda_arm.urdf.xacro里被launch文件加载-->
+    <parameters>$(arg ros2_controllers_file)</parameters>
+  </plugin>
+</gazebo>
+
+</robot>

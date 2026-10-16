@@ -1,0 +1,8 @@
+<library path="libpanda_arm_hardware">
+  <class
+    name="panda_arm_hardware/PandaArmHardware"
+    type="panda_arm_hardware::PandaArmHardware"
+    base_class_type="hardware_interface::SystemInterface">
+    <description>Hardware interface for 7DOF Panda arm with Unitree J288 motors (serial port version)</description>
+  </class>
+</library>

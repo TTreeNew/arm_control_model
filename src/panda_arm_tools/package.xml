@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>panda_arm_tools</name>
+  <version>0.1.0</version>
+  <description>
+    Tool nodes for the Panda arm: read motor position and zero-position calibration.
+    (Parameters such as kp/kd are edited directly in real_arm_config/config/*.yaml.)
+  </description>
+  <maintainer email="swang2792@gmail.com">TTreeNew</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>ament_index_cpp</depend>
+  <!-- 角度归一化（normalize_angle），用于消除循环编码器的 ±2π 假偏差 -->
+  <depend>angles</depend>
+  <!-- 滑块 GUI 节点（Python）：以度显示，限位从 robot_description 解析 -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <!-- 复用 MotorProtocol（串口协议层），不重复实现 -->
+  <depend>panda_arm_hardware</depend>
+  <!-- 仅为访问其 share 目录下的配置文件（motor_params.yaml / bridge_params.yaml） -->
+  <exec_depend>real_arm_config</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

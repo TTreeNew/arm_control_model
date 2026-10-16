@@ -1,0 +1,23 @@
+# real_rviz_bridge 节点运行参数
+# 由 slider_control.launch.py 加载，改后需 colcon build 并重启 launch 生效。
+# 节点名必须与 launch 里 Node(name=...) 保持一致，否则参数不会生效。
+
+real_rviz_bridge:
+  ros__parameters:
+    # 轨迹发布频率 (Hz)
+    # 指的是bridge real_rviz_bridge向/panda_arm_controller/joint_trajectory发布的频率
+    # 滑块 slider_gui_deg.py朝/gui_joint_states发布的频率定义在他自己的节点里
+    publish_rate: 50.00
+
+    # 关节角速度上限 (rad/s)。
+    # 限幅由 bridge 按【自己的发布周期】折算：
+    #     每帧位移上限 = max_velocity / publish_rate = 2.0 / 50 = 0.04 rad（约 2.3°）
+    # 有效速度上限恒为 max_velocity，与上游滑块发布频率无关。
+    # 其并不是直接对速度限幅，而是通过限制每帧步长来约束最大速度 
+    # real_rviz_bridge.cppL216-L216： point.velocities[i] = advanced_[i] / tick_period;
+    # 即velocity ≤ max_delta / tick_period = max_velocity 
+    max_velocity: 2.0
+
+    # 桥接总开关：true=正常转发滑块指令；false=完全停摆（不读滑块、不发轨迹，
+    # 机械臂保持当前状态）。运行时可用 ros2 param set 动态切换。
+    enabled: true

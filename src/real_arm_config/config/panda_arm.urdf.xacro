@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda_arm">
+    <xacro:arg name="initial_positions_file" default="$(find real_arm_config)/config/initial_positions.yaml" />
+    <xacro:arg name="motor_params_file" default="$(find real_arm_config)/config/motor_params.yaml" />
+    <!-- 控制用串口。转接板上有两个口：
+         /dev/ttyACM0 = 与电机通信（控制用，默认）
+         /dev/ttyACM1 = 固件更新用，误接会导致"电机全部无响应"
+         不确定时用 ls /dev/ttyACM* 查看 -->
+    <xacro:arg name="serial_port" default="/dev/ttyACM0" />
+    <xacro:arg name="motor_id_joint1" default="1" />
+    <xacro:arg name="motor_id_joint2" default="2" />
+    <xacro:arg name="motor_id_joint3" default="3" />
+    <xacro:arg name="motor_id_joint4" default="4" />
+    <xacro:arg name="motor_id_joint5" default="5" />
+    <xacro:arg name="motor_id_joint6" default="6" />
+    <xacro:arg name="motor_id_joint7" default="7" />
+
+    <!-- Import panda_arm urdf file -->
+    <xacro:include filename="$(find panda_arm_description)/urdf/panda_arm.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="$(find real_arm_config)/config/panda_arm.ros2_control.xacro" />
+
+
+    <xacro:panda_arm_ros2_control
+        name="RealArmSystem"
+        initial_positions_file="$(arg initial_positions_file)"
+        motor_params_file="$(arg motor_params_file)"
+        serial_port="$(arg serial_port)"
+        motor_id_joint1="$(arg motor_id_joint1)"
+        motor_id_joint2="$(arg motor_id_joint2)"
+        motor_id_joint3="$(arg motor_id_joint3)"
+        motor_id_joint4="$(arg motor_id_joint4)"
+        motor_id_joint5="$(arg motor_id_joint5)"
+        motor_id_joint6="$(arg motor_id_joint6)"
+        motor_id_joint7="$(arg motor_id_joint7)"/>
+
+</robot>

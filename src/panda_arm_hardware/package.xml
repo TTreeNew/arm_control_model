@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>panda_arm_hardware</name>
+  <version>0.0.0</version>
+  <description>Hardware interface and MIT-mode controller for 7DOF Panda arm with Unitree J288 motors</description>
+  <maintainer email="swang2792@gmail.com">tree</maintainer>
+  <license>TODO: License declaration</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>hardware_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_lifecycle</depend>
+  <depend>controller_interface</depend>
+  <depend>trajectory_msgs</depend>
+  <depend>realtime_tools</depend>
+  <depend>angles</depend>
+  <depend>lifecycle_msgs</depend>
+  <depend>sensor_msgs</depend>
+
+  <exec_depend>ros-humble-ros2-control</exec_depend>
+  <exec_depend>ros-humble-ros2-controllers</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+    <hardware_interface plugin="${prefix}/panda_arm_hardware.xml"/>
+    <controller_interface plugin="${prefix}/panda_arm_controller.xml"/>
+  </export>
+</package>

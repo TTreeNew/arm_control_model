@@ -1,0 +1,11 @@
+<library path="libpanda_arm_controller">
+  <class
+    name="panda_arm_hardware/PandaArmController"
+    type="panda_arm_controller::PandaArmController"
+    base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Panda Arm Controller — supports position + velocity + effort command interfaces
+      for MIT control mode. Directly forwards trajectory-sampled effort as feedforward torque.
+    </description>
+  </class>
+</library>

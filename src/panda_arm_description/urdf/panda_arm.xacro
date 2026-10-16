@@ -1,0 +1,274 @@
+<?xml version="1.0" ?>
+<robot name="panda_arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<material name="silver">
+  <color rgba="0.700 0.700 0.700 1.000"/>
+</material>
+
+<xacro:include filename="$(find panda_arm_description)/urdf/panda_arm.gazebo" />
+
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0019681926497810984 6.604228079970757e-06 0.01921365770142108" rpy="0 0 0"/>
+    <mass value="0.08166160402090158"/>
+    <inertia ixx="2.4e-05" iyy="2.8e-05" izz="4e-05" ixy="-0.0" iyz="0.0" ixz="-1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_1_1">
+  <inertial>
+    <origin xyz="0.0001762984058800439 -8.158286656627589e-06 0.023387610620853705" rpy="0 0 0"/>
+    <mass value="0.009982244246719816"/>
+    <inertia ixx="3e-06" iyy="6e-06" izz="3e-06" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 -0.0 -0.0385" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 -0.0 -0.0385" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_2_1">
+  <inertial>
+    <origin xyz="-0.010802129518961404 -6.869752142661322e-11 0.017141095389134303" rpy="0 0 0"/>
+    <mass value="0.09027650074887805"/>
+    <inertia ixx="5.2e-05" iyy="5.6e-05" izz="1.1e-05" ixy="0.0" iyz="0.0" ixz="-5e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0135 -0.0 -0.0865" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0135 -0.0 -0.0865" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_3_1">
+  <inertial>
+    <origin xyz="0.00017629840588666003 -8.158286657802024e-06 0.02338761062085365" rpy="0 0 0"/>
+    <mass value="0.009982244246719816"/>
+    <inertia ixx="3e-06" iyy="6e-06" izz="3e-06" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 -0.0 -0.139" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 -0.0 -0.139" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_4_1">
+  <inertial>
+    <origin xyz="-0.010802129518954784 -6.869869638175846e-11 0.01714109538913408" rpy="0 0 0"/>
+    <mass value="0.09027650074887757"/>
+    <inertia ixx="5.2e-05" iyy="5.6e-05" izz="1.1e-05" ixy="0.0" iyz="0.0" ixz="-5e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0135 0.0 -0.187" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0135 0.0 -0.187" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_4_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_5_1">
+  <inertial>
+    <origin xyz="0.00017629840589327702 -8.158286658976455e-06 0.023387610620853705" rpy="0 0 0"/>
+    <mass value="0.009982244246719816"/>
+    <inertia ixx="3e-06" iyy="6e-06" izz="3e-06" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 0.0 -0.2395" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 0.0 -0.2395" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_5_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link_6_1">
+  <inertial>
+    <origin xyz="-0.010802129518948166 -6.869987029215959e-11 0.017141095389134053" rpy="0 0 0"/>
+    <mass value="0.09027650074887705"/>
+    <inertia ixx="5.2e-05" iyy="5.6e-05" izz="1.1e-05" ixy="0.0" iyz="0.0" ixz="-5e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0135 0.0 -0.2875" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0135 0.0 -0.2875" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/link_6_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="end_link_1">
+  <inertial>
+    <origin xyz="-1.1367783213616225e-13 -7.707772354158081e-11 0.0037951210982622996" rpy="0 0 0"/>
+    <mass value="0.002457178205337948"/>
+    <!-- 惯量下限：Fusion 360 导出器把惯量四舍五入到 1e-06，本件 2.46 g 真值约 1.8e-07
+         被抹成 0.0 → ODE 质量矩阵非正定 → 仿真里 NaN 炸模型。取 1e-06 作下限，
+         拿到 CAD 精确惯量后请替换本行。 -->
+    <inertia ixx="1e-06" iyy="1e-06" izz="1e-06" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.0 0.0 -0.34" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/end_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.0 0.0 -0.34" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/end_link_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="finger_1">
+  <inertial>
+    <origin xyz="5.308110733053467e-05 5.9051163756052054e-05 0.0033389105913541606" rpy="0 0 0"/>
+    <mass value="0.002668080332572337"/>
+    <!-- 惯量下限：同上，2.67 g 真值约 2.0e-07 被导出器抹成 0.0，取 1e-06 作下限。 -->
+    <inertia ixx="1e-06" iyy="1e-06" izz="1e-06" ixy="-0.0" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 -0.0 -0.347" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/finger_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="silver"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 -0.0 -0.347" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="file://$(find panda_arm_description)/meshes/finger_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="joint_1" type="revolute">
+  <origin xyz="0.0 0.0 0.0385" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="link_1_1"/>
+  <axis xyz="-0.0 -0.0 1.0"/>
+  <limit upper="2.4435" lower="-2.4435" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+  <!-- damping相当于阻尼，friction相当于关节内部摩擦力。
+      坑：gazebo内部实现damping和friction使用的是底层的力矩接口，如果我也要用effect接口，就会相互覆盖导致gazebo里模型塌成一团显示不完整，而日志看不到报错难以发现问题 -->
+</joint>
+
+<joint name="joint_2" type="revolute">
+  <origin xyz="0.0135 0.0 0.048" rpy="0 0 0"/>
+  <parent link="link_1_1"/>
+  <child link="link_2_1"/>
+  <axis xyz="-1.0 -0.0 0.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="joint_3" type="revolute">
+  <origin xyz="-0.0135 0.0 0.0525" rpy="0 0 0"/>
+  <parent link="link_2_1"/>
+  <child link="link_3_1"/>
+  <axis xyz="0.0 -0.0 1.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="joint_4" type="revolute">
+  <origin xyz="0.0135 -0.0 0.048" rpy="0 0 0"/>
+  <parent link="link_3_1"/>
+  <child link="link_4_1"/>
+  <axis xyz="-1.0 -0.0 0.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="joint_5" type="revolute">
+  <origin xyz="-0.0135 0.0 0.0525" rpy="0 0 0"/>
+  <parent link="link_4_1"/>
+  <child link="link_5_1"/>
+  <axis xyz="0.0 -0.0 1.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="joint_6" type="revolute">
+  <origin xyz="0.0135 0.0 0.048" rpy="0 0 0"/>
+  <parent link="link_5_1"/>
+  <child link="link_6_1"/>
+  <axis xyz="-1.0 -0.0 0.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="joint_7" type="revolute">
+  <origin xyz="-0.0135 0.0 0.0525" rpy="0 0 0"/>
+  <parent link="link_6_1"/>
+  <child link="end_link_1"/>
+  <axis xyz="0.0 -0.0 1.0"/>
+  <limit upper="2.0071" lower="-2.0071" effort="100" velocity="100"/>
+  <dynamics damping="0.1" friction="0.02"/>
+</joint>
+
+<joint name="end_joint" type="fixed">
+  <origin xyz="-0.0 0.0 0.007" rpy="0 0 0"/>
+  <parent link="end_link_1"/>
+  <child link="finger_1"/>
+</joint>
+
+</robot>

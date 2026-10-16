@@ -1,0 +1,51 @@
+# 仿真使用的ros2_control 配置文件
+#
+# 在 urdf/panda_arm.gazebo 的 plugin 的 <parameters> 加载，可以在launch里被 --param-file 覆盖。
+
+# 仿真和实物的配置文件各自维护自己的 kp  kd gravity_scale
+
+
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    panda_arm_controller:
+      type: panda_arm_hardware/PandaArmController
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+
+panda_arm_controller:
+  ros__parameters:
+    joints:
+      - joint_1
+      - joint_2
+      - joint_3
+      - joint_4
+      - joint_5
+      - joint_6
+      - joint_7
+
+    # 只声明 effort
+    command_interfaces:
+      - effort
+    # 状态接口
+    state_interfaces:
+      - position
+      - velocity
+      - effort
+
+    kp: [2.0, 8.0, 2.0, 5.0, 2.0, 3.0, 2.0]
+    kd: [0.03, 0.05, 0.03, 0.04, 0.03, 0.03, 0.03]
+    # kd: [0.87,1.07,0.65,0.53,0.26,0.13,0.008]
+    # kp: [0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+    # kd: [0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+    # 力矩限幅 (Nm)，为了还原电机实际的力矩上限
+    effort_limit: [1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5]
+    # effort_limit: [20.0, 20.0, 20.0, 20.0, 20.0, 20.0, 20.0]   #  先放开
+
+    # ── 重力补偿 ──
+    #  和实物含义相同，见src/real_arm_config/config/gravity_params.yaml
+    gravity_scale: 0.8
+    gravity_sign: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]

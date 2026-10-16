@@ -1,0 +1,68 @@
+#由panda_arm.ros2_control.xacro加载，赋值给他的 param 标签
+
+# 电机刚度和阻尼参数 u(t) = kp × [θ_desired - θ_current] - [w_desired - w_current] + τ_ff
+
+# ★ τ_ff 仅由重力补偿提供
+#   控制器每个周期按【实测位形】算出 τ_ff = g(q)，经 effort 命令接口下发给电机
+#   （实现：panda_arm_hardware/src/gravity_compensation.cpp）。
+
+# ── 标定依据 ──
+#
+#   Kp 由「允许的重力下垂」倒导： Kp = τ_g_max / e_allow   （e_allow ≈ 2~4°）
+#   Kd 由阻尼比倒推导：         Kd = 2ζ√(Kp·J)，临界状态ζ = 1.0（不振荡且响应及时的状态）
+#       其中 J = 该关节下游连杆的等效惯量 Σmᵢdᵢ²（取水平伸展的最坏位姿）
+#
+# 各关节最大重力力矩（用 pinocchio 根据 URDF 计算；URDF 已含电机导线）：
+#   joint_1  0.04 Nm（轴偏离竖直 1.1°）      joint_2  2.02 Nm（水平位姿最大）
+#   joint_3  0.79 Nm *                      joint_4  0.78 Nm
+#   joint_5  0.12 Nm *                      joint_6  0.12 Nm
+#   joint_7  0.00 Nm
+#
+## 调参（宁可先过阻尼，再往回调）：
+#   1) 一到点就"嗡嗡/发抖" → Kd 偏大（放大了速度噪声），降 30%
+#   2) 松手后回弹振荡好几下 → Kd 不够，加 30%
+#   3) 明显下垂 / 推不动 → Kp 不够，加 50%
+#   4) 手感"发死"（1.5 Nm 只能推偏 <4°）→ Kp 偏大
+#
+# 说明：1、joint_3/5/7 的旋转轴沿连杆方向，绕轴惯量极小、由电机自身转子惯量
+#   主导 → 它们的 Kd 必须接近裸电机量级（0.03~0.1），按连杆惯量算会阻尼比
+#   过大：既发闷又放大噪声。
+#      2、振荡是指来回摆动几下。抖动是指极小范围高频抖动。kd过小会振荡，过大会抖动，如果不存在中间区间
+#       说明关节自身的摩擦和阻尼不够。
+#      3、gazebo由于物理步长仿真会产生极限环，可以通过增大控制器update频率和word里的gazebo物理步长减弱，无法消除。
+#
+#
+#   改完需 `colcon build --packages-select real_arm_config` 并重启 launch：
+#   kp/kd 在硬件 on_init() 时读入，不支持热更新。
+
+#   仿真和实物使用滑块时关节的实际速度都是 bridge 从位置差算出来的，且受bridge_params.yaml里的最大速度约束
+
+kp: #输出端刚度 (Nm/rad)
+  joint_1: 2.0             # 基座，轴垂直
+  joint_2: 3.0             # 轴水平
+  joint_3: 2.0             # 轴垂直
+  joint_4: 3.0             # 轴水平
+  joint_5: 2.0             # 轴垂直
+  joint_6: 3.0             # 轴水平
+  joint_7: 2.0             # 轴垂直
+
+kd: #输出端阻尼 (Nm·s/rad)
+  joint_1: 0.03
+  joint_2: 0.03
+  joint_3: 0.03
+  joint_4: 0.03
+  joint_5: 0.03
+  joint_6: 0.03
+  joint_7: 0.03
+
+# 零位置偏移 (rad)，实际角度 = 编码器 outputPos - zero_offset
+# 由 zero_calibrator_node 校准后自动填入，初始为 0（表示不做偏移）
+# 硬件层通过 xacro 读取，改后需 colcon build 并重启 launch 生效
+zero_offsets:
+  joint_1: 0.540205
+  joint_2: 0.136104
+  joint_3: -0.850569
+  joint_4: 0.286861
+  joint_5: 1.304369
+  joint_6: -2.035447
+  joint_7: 0.917781

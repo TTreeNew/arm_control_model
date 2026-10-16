@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!--
+  仿真入口（Gazebo Classic 11）。对照实物的 config/panda_arm.urdf.xacro。
+
+    实物：include panda_arm.xacro + panda_arm.ros2_control.xacro
+          （PandaArmHardware，声明 position/velocity/effort 三个命令接口）
+    仿真：include panda_arm.xacro + panda_arm.sim.ros2_control.xacro
+          （GazeboSystem，只声明 effort）
+
+  panda_arm.gazebo 被 include在 panda_arm_description/urdf/panda_arm.xacro 里。
+-->
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="panda_arm_sim">
+
+    <!-- 机器人本体 -->
+    <xacro:include filename="$(find panda_arm_description)/urdf/panda_arm.xacro" />
+
+    <!-- 导入控制器接口配置 -->
+    <xacro:include filename="$(find real_arm_config)/config/panda_arm.sim.ros2_control.xacro" />
+
+    <xacro:panda_arm_sim_ros2_control name="GazeboSystem"/>
+
+    <link name="world"/>
+    <joint name="world_to_base" type="fixed">
+        <parent link="world"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+</robot>
