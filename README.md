@@ -4,6 +4,7 @@
 
 核心链路：URDF 模型 → ros2_control 硬件抽象 → 电机串口协议 → 重力补偿 + PD 控制；
 
+模型文件见[https://github.com/TTreeNew/model_for_panda_arm]
 ---
 
 ## 目录
@@ -20,6 +21,8 @@
   - 3. 调试标定工具（`panda_arm_tools`）
 - 三、测试使用流程
   - 装臂后（实物标定 → 控制）
+- 四、滑块控制流程图
+- 五、滑块拖动演示
 
 ---
 
@@ -168,5 +171,15 @@ ros2 launch real_arm_config slider_control.launch.py serial_port:=/dev/ttyACM0
 ② 控制器 + 硬件：`PandaArmController`（重力前馈 + PD）接收轨迹后下发给硬件插件，实物走 `PandaArmHardware`（串口 → 电机），仿真走 `GazeboSystem`（→ Gazebo 模型），状态再由 `joint_state_broadcaster` 汇总给 RViz2 显示。
 
 ![滑块控制流程图](docs/滑块流程图.png)
+
+---
+
+## 五、滑块拖动演示
+
+拖动滑块 → 机械臂实时跟随：
+
+<video src="docs/滑块拖动演示.mp4" width="800" controls autoplay loop muted playsinline></video>
+
+
 
 
